@@ -52,6 +52,7 @@ module Mina
 
     def run!
       report_time { ssh commands(:default) }
+      @commands = nil
     end
 
     # ### report_time
