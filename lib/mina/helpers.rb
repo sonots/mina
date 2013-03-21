@@ -69,7 +69,7 @@ module Mina
 
     def report_time(&blk)
       time, output = measure &blk
-      print_str "Elapsed time: %.2f seconds" % [time]
+      print_str "Elapsed time: %.2f seconds at %s" % [time, domain]
       output
     end
 
