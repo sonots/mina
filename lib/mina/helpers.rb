@@ -83,7 +83,7 @@ module Mina
     def measure(&blk)
       t = Time.now
       output = yield
-      [(Time.now - t).to_i, output]
+      [(Time.now - t).to_f, output]
     end
 
     # ### mina_cleanup
