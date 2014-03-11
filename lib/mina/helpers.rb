@@ -51,7 +51,11 @@ module Mina
     # Returns nothing.
 
     def run!
-      report_time { ssh commands(:default) }
+      begin
+        report_time { ssh commands(:default) }
+      ensure
+        @commands = nil
+      end
     end
 
     # ### report_time
@@ -68,7 +72,7 @@ module Mina
 
     def report_time(&blk)
       time, output = measure &blk
-      print_str "Elapsed time: %.2f seconds" % [time]
+      print_str "Elapsed time: %.2f seconds at %s" % [time, domain]
       output
     end
 
@@ -79,7 +83,7 @@ module Mina
     def measure(&blk)
       t = Time.now
       output = yield
-      [(Time.now - t).to_i, output]
+      [(Time.now - t).to_f, output]
     end
 
     # ### mina_cleanup
@@ -101,7 +105,7 @@ module Mina
     #     die 2, "Tests failed"
 
     def die(code=1, msg=null)
-      str = "Failed with status #{code}"
+      str = "Failed with status #{code} at #{domain}"
       str += " (#{msg})" if msg
       err = Failed.new(str)
       err.exitstatus = code
